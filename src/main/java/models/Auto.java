@@ -5,16 +5,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "autos")
 public class Auto {
     @Getter
+    @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column( columnDefinition = "uuid", updatable = false, unique = true)
+    private UUID guid;
 
     @Getter
     @Setter
@@ -39,6 +40,7 @@ public class Auto {
 
     public Auto(String model, String color) {
         this();
+        this.guid = UUID.randomUUID();
         this.model = model;
         this.color = color;
     }

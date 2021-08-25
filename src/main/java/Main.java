@@ -2,19 +2,26 @@ import models.Auto;
 import models.User;
 import services.UserService;
 
-import java.util.logging.Level;
-
 public class Main {
     public static void main(String[] args) {
-        UserService userService = new UserService();
-        User user = new User("Masha",26);
-        userService.saveUser(user);
-        Auto ferrari = new Auto("Ferrari", "red");
-        ferrari.setUser(user);
-        user.addAuto(ferrari);
-        Auto ford = new Auto("Ford", "black");
-        ford.setUser(user);
-        user.addAuto(ford);
-        userService.updateUser(user);
+
+        try(UserService userService = new UserService()) {
+            System.out.println("test01");
+
+            User user = new User("Masha", 26);
+            userService.saveUser(user);
+            user.addAuto(new Auto("Ferrari", "red"));
+            user.addAuto(new Auto("Ford", "black"));
+            userService.updateUser(user);
+
+            System.out.println("test02");
+
+            var users = userService.findAllUsers();
+            for (User saveUser : users) {
+                System.out.println("change");
+                saveUser.setName(saveUser.getName() + "123");
+                userService.saveUser(saveUser);
+            }
+        }
     }
 }

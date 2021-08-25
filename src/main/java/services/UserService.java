@@ -4,13 +4,16 @@ import dao.UserDao;
 import models.Auto;
 import models.User;
 
+import java.io.Closeable;
 import java.util.List;
+import java.util.UUID;
 
-public class UserService {
+public class UserService implements Closeable {
 
-    private final UserDao usersDao = new UserDao();
+    private final UserDao usersDao;
 
     public UserService() {
+        usersDao = new UserDao();
     }
 
     public User findUser(int id) {
@@ -33,7 +36,12 @@ public class UserService {
         return usersDao.findAll();
     }
 
-    public Auto findAutoById(int id) {
-        return usersDao.findAutoById(id);
+    public Auto findAutoByGUId(UUID guid) {
+        return usersDao.findAutoByGUId(guid);
+    }
+
+    @Override
+    public void close() {
+        usersDao.close();
     }
 }

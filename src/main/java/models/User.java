@@ -2,20 +2,22 @@ package models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
+@SelectBeforeUpdate(value = false)
 @Table (name = "users")
 public class User {
-
     @Getter
+    @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column( columnDefinition = "uuid", updatable = false, unique = true)
+    private UUID guid;
 
     @Getter
     @Setter
@@ -38,6 +40,7 @@ public class User {
 
     public User(String name, int age) {
         this();
+        this.guid = UUID.randomUUID();
         this.name = name;
         this.age = age;
     }
